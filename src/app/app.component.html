@@ -1,2 +1,181 @@
+<div class="antialiased bg-gray-50 dark:bg-gray-900">
+	<nav
+		class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50"
+	>
+		<div class="flex flex-wrap justify-between items-center">
+			<div class="flex justify-start items-center">
+				<button
+					aria-controls="drawer-navigation"
+					class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+					data-drawer-target="drawer-navigation"
+					data-drawer-toggle="drawer-navigation"
+				>
+					<svg
+						aria-hidden="true"
+						class="w-6 h-6"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							clip-rule="evenodd"
+							d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+							fill-rule="evenodd"
+						></path>
+					</svg>
+					<svg
+						aria-hidden="true"
+						class="hidden w-6 h-6"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							clip-rule="evenodd"
+							d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+							fill-rule="evenodd"
+						></path>
+					</svg>
+					<span class="sr-only">Toggle sidebar</span>
+				</button>
+				<a class="flex items-center justify-between mr-4" routerLink="/">
+					<span
+						class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+					>Characters List</span
+					>
+				</a>
+			</div>
+			<div class="flex items-center lg:order-2">
+				@if (loggedInUser) {
+					<!-- Dropdown menu -->
+					<button
+						aria-expanded="false"
+						class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+						(click)="toggleUserDropdown()"
+						id="user-menu-button"
+						type="button"
+					>
+						<span class="sr-only">Open user menu</span>
+						<img
+							alt="user photo"
+							class="w-8 h-8 rounded-full"
+							src="{{ loggedInUser.picture }}"
+						/>
+					</button>
+					<!-- Dropdown menu -->
+					<div
+						class="z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl absolute top-8 right-4"
+						id="dropdown"
+						[ngClass]="{ hidden: !isUserDropdownOpen, inline: isUserDropdownOpen }"
+					>
+						<div class="py-3 px-4">
+							<span class="block text-sm font-semibold text-gray-900 dark:text-white">{{ loggedInUser.name }}</span>
+							<span class="block text-sm text-gray-900 truncate dark:text-white">{{ loggedInUser.email }}</span>
+						</div>
+						<ul
+							aria-labelledby="dropdown"
+							class="py-1 text-gray-700 dark:text-gray-300"
+						>
+							<li>
+								<a
+									class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
+									routerLink="/profile"
+								>My profile</a
+								>
+							</li>
+							<li>
+								<a
+									class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
+									routerLink="/profile/edit">Account settings</a>
+							</li>
+						</ul>
+						<ul
+							aria-labelledby="dropdown"
+							class="py-1 text-gray-700 dark:text-gray-300"
+						>
+							<li>
+								<span class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+											(click)="auth.logout()">Sign out</span>
+							</li>
+						</ul>
+					</div>
+				} @else {
+					<app-login-button></app-login-button>
+				}
+			</div>
+		</div>
+	</nav>
 
-<router-outlet />
+
+	@if (loggedInUser) {
+
+		<!-- Sidebar -->
+		<aside
+			aria-label="Sidenav"
+			class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+			id="drawer-navigation"
+		>
+			<div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+				<ul class="space-y-2">
+					<li>
+						<a
+							class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+							routerLink="/characters"
+							routerLinkActive="text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
+						>
+							<svg
+								aria-hidden="true"
+								class="w-6 h-6 text-gray-800 dark:text-white"
+								fill="none"
+								height="24"
+								viewBox="0 0 24 24"
+								width="24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5"
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-width="2"
+								/>
+							</svg>
+							<span class="flex-1 ml-3 text-left whitespace-nowrap">My Characters</span>
+						</a>
+					</li>
+					<li>
+						<a
+							class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+							routerLink="/sessions"
+							routerLinkActive="text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
+						>
+							<svg
+								aria-hidden="true"
+								class="w-6 h-6 text-gray-800 dark:text-white"
+								fill="none"
+								height="24"
+								viewBox="0 0 24 24"
+								width="24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z"
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+								/>
+							</svg>
+							<span class="flex-1 ml-3 text-left whitespace-nowrap"
+							>Playing Sessions</span
+							>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</aside>
+
+		<main class="p-4 md:ml-64 h-auto pt-20">
+
+		</main>
+	}
+</div>

@@ -1,0 +1,6 @@
+@for (character of userCharacters; track character.id) {
+	<app-character-card
+		[character]="character"
+		(click)="onCharacterClick(character)"
+	/>
+}
