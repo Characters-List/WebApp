@@ -19,16 +19,22 @@
 		"module": "ES2022",
 		"paths": {
 			"@components/*": [
-				"./src/app/components/*"
+				"./src/libs/components/*"
 			],
 			"@services/*": [
-				"./src/app/services/*"
+				"./src/libs/services/*"
 			],
 			"@models/*": [
-				"./src/app/models/*"
+				"./src/libs/models/*"
 			],
 			"@utils/*": [
-				"./src/app/utils/*"
+				"./src/libs/utils/*"
+			],
+			"@validators/*": [
+				"./src/libs/validators/*"
+			],
+			"@pipes": [
+				"./src/libs/pipes/*"
 			]
 		}
 	},

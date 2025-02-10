@@ -1,6 +1,22 @@
-@for (character of userCharacters; track character.id) {
-	<app-character-card
-		[character]="character"
-		(click)="onCharacterClick(character)"
-	/>
+<span class="flex justify-between text-base font-semibold text-gray-900 dark:text-white mb-4">
+	<h1 class="my-auto text-2xl">Here are your characters</h1>
+
+	<app-new-character-button (characterCreated)="onCharacterCreated($event)"/>
+</span>
+
+@if (!userCharacters) {
+	<p class="text-center">Loading...</p>
 }
+
+@if (userCharacters?.length === 0) {
+	<p class="text-center">You have no characters yet. Create one now!</p>
+}
+
+<div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+	@for (character of (userCharacters || []); track character.id) {
+		<app-character-card
+			[character]="character"
+			(click)="onCharacterClick(character)"
+		/>
+	}
+</div>

@@ -73,22 +73,21 @@
 							<span class="block text-sm font-semibold text-gray-900 dark:text-white">{{ loggedInUser.name }}</span>
 							<span class="block text-sm text-gray-900 truncate dark:text-white">{{ loggedInUser.email }}</span>
 						</div>
-						<ul
-							aria-labelledby="dropdown"
-							class="py-1 text-gray-700 dark:text-gray-300"
-						>
-							<li>
-								<a
-									class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
-									routerLink="/profile"
-								>My profile</a>
-							</li>
-							<li>
-								<a
-									class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
-									routerLink="/profile/edit">Account settings</a>
-							</li>
-						</ul>
+						<!-- <ul -->
+						<!-- 	aria-labelledby="dropdown" -->
+						<!-- 	class="py-1 text-gray-700 dark:text-gray-300" -->
+						<!-- > -->
+						<!-- 	<li> -->
+						<!-- 		<a -->
+						<!-- 			class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" -->
+						<!-- 			routerLink="/profile">My profile</a> -->
+						<!-- 	</li> -->
+						<!-- 	<li> -->
+						<!-- 		<a -->
+						<!-- 			class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" -->
+						<!-- 			routerLink="/profile/edit">Account settings</a> -->
+						<!-- 	</li> -->
+						<!-- </ul> -->
 						<ul
 							aria-labelledby="dropdown"
 							class="py-1 text-gray-700 dark:text-gray-300"
@@ -101,9 +100,8 @@
 							</li>
 						</ul>
 					</div>
-				}
-				@else {
-					<app-login-button />
+				} @else {
+					<app-login-button/>
 				}
 			</div>
 		</div>
@@ -134,8 +132,9 @@
 									viewBox="0 0 24 24"
 									width="24"
 									xmlns="http://www.w3.org/2000/svg"
+									[innerHTML]="link.iconPath | safeHtml"
 								>
-									{{ link.iconPath | safeHtml }}
+
 								</svg>
 								<span class="flex-1 ml-3 text-left whitespace-nowrap dark:text-white">{{ link.title }}</span>
 							</a>
@@ -146,7 +145,11 @@
 		</div>
 	</aside>
 
-	<main class="p-4 md:ml-64 h-auto pt-20">
-		<router-outlet />
+	<main class="p-4 md:ml-64 pt-20">
+		<div class="h-full">
+			<router-outlet/>
+		</div>
 	</main>
 </div>
+
+<app-toast/>

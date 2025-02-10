@@ -1,0 +1,43 @@
+<div class="flex justify-between text-gray-800 dark:text-white">
+	<a
+		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
+		href="/characters" title="Back to characters list">
+		<svg aria-hidden="true" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" height="24"
+				 viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+			<path d="m15 19-7-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+		</svg>
+
+		Back
+	</a>
+
+	<h1 class="text-2xl my-auto">{{ character.name }}</h1>
+
+	<span class="flex gap-2">
+		<app-edit-character-button [character]="character"/>
+		<app-delete-character-button [character]="character"/>
+	</span>
+</div>
+<article class="mt-4">
+	<dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+		<dt class="font-semibold">Name</dt>
+		<dd>{{ character.name }}</dd>
+
+		<dt class="font-semibold">Class</dt>
+		<dd>
+			<a
+				[routerLink]="['/classes', character.class.id]"
+				class="text-primary-800 dark:text-primary-300 hover:underline">
+				{{ character.class.name }}
+			</a>
+		</dd>
+
+		<dt class="font-semibold">Date of birth</dt>
+		<dd>{{ character.dateOfBirth }}</dd>
+
+		<dt class="font-semibold">Gold</dt>
+		<dd>{{ character.gold }}</dd>
+
+		<dt class="font-semibold">Experience</dt>
+		<dd>{{ character.experience }}</dd>
+	</dl>
+</article>

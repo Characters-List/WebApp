@@ -5,7 +5,10 @@ import { NgClass } from "@angular/common";
 import { initFlowbite } from "flowbite";
 
 import { LoginButtonComponent } from "@components/login-button/login-button.component";
-import { SafeHtmlPipe } from "./pipes/safe-html/safe-html.pipe";
+import { SafeHtmlPipe } from "../libs/pipes/safe-html/safe-html.pipe";
+import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
+import { ToastComponent } from "@components/toast/toast.component";
+import { DateValueAccessorDirective } from "../libs/directives/date-value-accessor/date-value-accessor.directive";
 
 type SidebarLink = {
 	path: `/${string}`;
@@ -43,7 +46,10 @@ const sidebarLinks: Array<SidebarLink> = [
 		RouterLinkActive,
 		SafeHtmlPipe,
 		RouterOutlet,
+		ToastComponent,
 	],
+	hostDirectives: [DateValueAccessorDirective],
+	providers: [ToastProviderService],
 	standalone: true,
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.css",
@@ -63,8 +69,6 @@ export class AppComponent implements OnInit {
 		initFlowbite();
 
 		this.authService.user$.subscribe((user) => {
-			console.log("Got user", user);
-
 			if (user) {
 				this.loggedInUser = user;
 			}

@@ -1,0 +1,79 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="characterForm">
+	<div class="grid gap-4 mb-4">
+		<div>
+			<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Name</label>
+			<input
+				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+				formControlName="name" id="name" name="name"
+				placeholder="Type character name" type="text">
+			@if (characterForm.controls.name.invalid && characterForm.controls.name.dirty) {
+				<p class="mt-2 text-sm text-red-600 dark:text-red-500">
+					@if (characterForm.controls.name.errors?.["minlength"]) {
+						Name must be at least {{ characterForm.controls.name.errors?.["minlength"].requiredLength }} characters long.
+					} @else if (characterForm.controls.name.errors?.["maxlength"]) {
+						Name must be at most {{ characterForm.controls.name.errors?.["maxlength"].requiredLength }} characters long.
+					} @else {
+						Name is required.
+					}
+				</p>
+			}
+		</div>
+		<div>
+			<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="dob">Date of birth</label>
+
+			<div class="relative">
+				<div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+					<svg aria-hidden="true" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor"
+							 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+					</svg>
+				</div>
+
+				<input
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					formControlName="dateOfBirth" id="dob"
+					placeholder="Select date" type="date">
+			</div>
+
+			@if (characterForm.controls.dateOfBirth.invalid && characterForm.controls.dateOfBirth.dirty) {
+				<p class="mt-2 text-sm text-red-600 dark:text-red-500">
+					@if (characterForm.controls.dateOfBirth.errors?.["required"]) {
+						Date of birth is required.
+					} @else if (characterForm.controls.dateOfBirth.errors?.["notAfter"]) {
+						{{ characterForm.controls.dateOfBirth.errors?.["notAfter"].actual }} should be after {{ characterForm.controls.dateOfBirth.errors?.["notAfter"].required }}.
+					} @else if (characterForm.controls.dateOfBirth.errors?.["notBefore"]) {
+						{{ characterForm.controls.dateOfBirth.errors?.["notBefore"].actual }} should be before {{ characterForm.controls.dateOfBirth.errors?.["notBefore"].required }}.
+					} @else {
+						Invalid date.
+					}
+				</p>
+			}
+		</div>
+		<div>
+			<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="classId">Class</label>
+			<select
+				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+				formControlName="classId" id="classId">
+				<option disabled selected value="">Select a class</option>
+
+				@for (characterClass of classesAvailable; track characterClass.id) {
+					<option [value]="characterClass.id">{{ characterClass.name }}</option>
+				}
+			</select>
+		</div>
+	</div>
+
+	<button
+		[disabled]="characterForm.invalid"
+		class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-700"
+		type="submit">
+		<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+			<path clip-rule="evenodd"
+						d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+						fill-rule="evenodd"></path>
+		</svg>
+
+		Add new character
+	</button>
+</form>
