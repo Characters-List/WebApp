@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
 
 			authorizationParams: {
 				redirect_uri: window.location.origin,
-				audience: "https://dev-4wq76bzqc3gkp4qs.eu.auth0.com/api/v2/",
+				audience: "https://characterslist/api",
 			},
 
 			httpInterceptor: {
