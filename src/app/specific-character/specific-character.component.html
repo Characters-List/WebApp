@@ -1,7 +1,7 @@
 <div class="flex justify-between text-gray-800 dark:text-white">
 	<a
 		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
-		href="/characters" title="Back to characters list">
+		routerLink="/characters" title="Back to characters list">
 		<svg aria-hidden="true" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" height="24"
 				 viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 			<path d="m15 19-7-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -32,7 +32,7 @@
 		</dd>
 
 		<dt class="font-semibold">Date of birth</dt>
-		<dd>{{ character.dateOfBirth }}</dd>
+		<dd>{{ character.dateOfBirth.toLocaleDateString() }}</dd>
 
 		<dt class="font-semibold">Gold</dt>
 		<dd>{{ character.gold }}</dd>

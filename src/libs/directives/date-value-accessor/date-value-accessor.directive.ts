@@ -19,7 +19,7 @@ const DATE_VALUE_PROVIDER: Provider = {
 	providers: [DATE_VALUE_PROVIDER],
 })
 export class DateValueAccessorDirective implements ControlValueAccessor {
-	@HostListener("input", ["$event.target.valueAsDate"])
+	@HostListener("input([type=date])", ["$event.target.valueAsDate"])
 	private onChange!: Function;
 	@HostListener("blur")
 	private onTouched!: Function;

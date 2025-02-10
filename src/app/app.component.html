@@ -122,7 +122,7 @@
 								class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
 								[routerLink]="link.path"
 								routerLinkActive="text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
-								[routerLinkActiveOptions]="{ exact: true }"
+								[routerLinkActiveOptions]="{ matrixParams: 'exact', queryParams: 'exact', paths: 'subset', fragment: 'exact' }"
 							>
 								<svg
 									aria-hidden="true"

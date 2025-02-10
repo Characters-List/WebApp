@@ -6,6 +6,7 @@ import {
 	CharacterModel,
 } from "@models/character.model";
 import { CharacterClassModel } from "@models/characterClass.model";
+import { map } from "rxjs";
 
 const API_URL = "https://localhost:7131/api";
 
@@ -24,6 +25,15 @@ export class ApiService {
 		);
 	}
 
+	getClass(classId: string) {
+		return this.http.get<CharacterClassModel>(
+			`${API_URL}/CharacterClasses/${classId}`,
+			{
+				withCredentials: true,
+			}
+		);
+	}
+
 	getMyCharacters() {
 		return this.http.get<Array<CharacterModel>>(`${API_URL}/Characters`, {
 			withCredentials: true,
@@ -31,8 +41,21 @@ export class ApiService {
 	}
 
 	getCharacter(characterId: string) {
-		return this.http.get<CharacterModel>(
-			`${API_URL}/Characters/${characterId}`,
+		return this.http
+			.get<CharacterModel>(`${API_URL}/Characters/${characterId}`, {
+				withCredentials: true,
+			})
+			.pipe(
+				map((character) => {
+					character.dateOfBirth = new Date(character.dateOfBirth);
+					return character;
+				})
+			);
+	}
+
+	getCharactersByClass(classId: string) {
+		return this.http.get<Array<CharacterModel>>(
+			`${API_URL}/CharacterClasses/${classId}/Characters`,
 			{
 				withCredentials: true,
 			}

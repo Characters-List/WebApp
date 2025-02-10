@@ -13,9 +13,10 @@
 </button>
 
 <!-- Main modal -->
-<div [class.hidden]="!isEditionModalOpen"
-		 aria-hidden="true"
-		 class="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-modal md:h-full backdrop-blur-sm backdrop-filter backdrop-brightness-50"
+<div
+	   [class.flex]="isEditionModalOpen"
+	   [class.hidden]="!isEditionModalOpen"
+		 class="hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full h-modal md:h-full backdrop-blur-sm backdrop-filter backdrop-brightness-50"
 		 role="dialog"
 		 tabindex="-1">
 	<div class="relative p-4 w-full max-w-2xl h-full md:h-auto">

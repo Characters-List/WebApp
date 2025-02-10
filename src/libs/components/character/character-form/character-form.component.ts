@@ -54,14 +54,17 @@ export class CharacterFormComponent implements OnInit {
 			this.characterForm.setValue({
 				name: this.currentCharacter.name,
 				classId: this.currentCharacter.class.id,
-				dateOfBirth: this.currentCharacter.dateOfBirth,
+				dateOfBirth: null,
 			});
+			this.characterForm.controls.dateOfBirth.patchValue(
+				this.currentCharacter.dateOfBirth
+			);
 		}
 	}
 
 	onSubmit() {
 		const toastId = this.toastService.showToast(
-			"Creating character...",
+			`${this.currentCharacter ? "Updating" : "Creating"} character...`,
 			"info"
 		);
 
@@ -73,15 +76,33 @@ export class CharacterFormComponent implements OnInit {
 					this.characterForm.value.dateOfBirth as unknown as string
 				),
 			})
-			.subscribe((response) => {
-				console.log(response);
-				this.toastService.clearToast(toastId);
+			.subscribe({
+				next: (response) => {
+					this.toastService.clearToast(toastId);
 
-				this.toastService.showToast(
-					"Character created successfully",
-					"success"
-				);
-				this.characterCreated.emit(response);
+					if (this.currentCharacter) {
+						this.toastService.showToast(
+							"Character updated successfully",
+							"success"
+						);
+						this.characterUpdated.emit(response);
+						return;
+					}
+					this.toastService.showToast(
+						"Character created successfully",
+						"success"
+					);
+					this.characterCreated.emit(response);
+				},
+				error: (error) => {
+					console.error(error);
+
+					this.toastService.clearToast(toastId);
+					this.toastService.showToast(
+						`Error while ${this.currentCharacter ? "updating" : "creating"} character`,
+						"error"
+					);
+				},
 			});
 	}
 }

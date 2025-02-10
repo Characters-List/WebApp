@@ -19,11 +19,6 @@ type SidebarLink = {
 
 const sidebarLinks: Array<SidebarLink> = [
 	{
-		path: "/",
-		iconPath: `<path d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
-		title: "Home",
-	},
-	{
 		path: "/characters",
 		iconPath: `<path d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5" stroke="currentColor" stroke-linecap="round" stroke-width="2" />`,
 		title: "Characters",
