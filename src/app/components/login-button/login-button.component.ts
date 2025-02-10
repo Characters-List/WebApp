@@ -10,7 +10,7 @@ import { AuthService } from "@auth0/auth0-angular";
 export class LoginButtonComponent {
 	constructor(private authService: AuthService) {}
 
-	get auth() {
-		return this.authService;
+	login() {
+		this.authService.loginWithRedirect();
 	}
 }

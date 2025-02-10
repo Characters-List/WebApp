@@ -1,13 +1,49 @@
 import { Component, OnInit } from "@angular/core";
-import { RouterLink, RouterLinkActive } from "@angular/router";
-import { initFlowbite } from "flowbite";
+import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { AuthService, User } from "@auth0/auth0-angular";
-import { LoginButtonComponent } from "@components/login-button/login-button.component";
 import { NgClass } from "@angular/common";
+import { initFlowbite } from "flowbite";
+
+import { LoginButtonComponent } from "@components/login-button/login-button.component";
+import { SafeHtmlPipe } from "./pipes/safe-html/safe-html.pipe";
+
+type SidebarLink = {
+	path: `/${string}`;
+	iconPath: `<path d="${string} stroke="${string}" stroke-linecap="${string}" stroke-width="${number}" />`;
+	title: string;
+	loggedInOnly?: boolean;
+};
+
+const sidebarLinks: Array<SidebarLink> = [
+	{
+		path: "/",
+		iconPath: `<path d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
+		title: "Home",
+	},
+	{
+		path: "/characters",
+		iconPath: `<path d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5" stroke="currentColor" stroke-linecap="round" stroke-width="2" />`,
+		title: "Characters",
+		loggedInOnly: true,
+	},
+	{
+		path: "/sessions",
+		iconPath: `<path d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
+		title: "Playing Sessions",
+		loggedInOnly: true,
+	},
+];
 
 @Component({
 	selector: "app-root",
-	imports: [RouterLink, LoginButtonComponent, NgClass, RouterLinkActive],
+	imports: [
+		RouterLink,
+		LoginButtonComponent,
+		NgClass,
+		RouterLinkActive,
+		SafeHtmlPipe,
+		RouterOutlet,
+	],
 	standalone: true,
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.css",
@@ -15,6 +51,7 @@ import { NgClass } from "@angular/common";
 export class AppComponent implements OnInit {
 	loggedInUser: User | null = null;
 	isUserDropdownOpen = false;
+	sidebarLinks = sidebarLinks;
 
 	constructor(private authService: AuthService) {}
 

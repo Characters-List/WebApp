@@ -41,30 +41,31 @@
 				<a class="flex items-center justify-between mr-4" routerLink="/">
 					<span
 						class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-					>Characters List</span
-					>
+					>Characters List</span>
 				</a>
 			</div>
 			<div class="flex items-center lg:order-2">
 				@if (loggedInUser) {
 					<!-- Dropdown menu -->
-					<button
-						aria-expanded="false"
-						class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-						(click)="toggleUserDropdown()"
-						id="user-menu-button"
-						type="button"
-					>
-						<span class="sr-only">Open user menu</span>
-						<img
-							alt="user photo"
-							class="w-8 h-8 rounded-full"
-							src="{{ loggedInUser.picture }}"
-						/>
-					</button>
+					<span class="py-1">
+						<button
+							aria-expanded="false"
+							class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+							(click)="toggleUserDropdown()"
+							id="user-menu-button"
+							type="button"
+						>
+							<span class="sr-only">Open user menu</span>
+							<img
+								alt="user photo"
+								class="w-8 h-8 rounded-full"
+								src="{{ loggedInUser.picture }}"
+							/>
+						</button>
+					</span>
 					<!-- Dropdown menu -->
 					<div
-						class="z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl absolute top-8 right-4"
+						class="z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 absolute top-8 right-4"
 						id="dropdown"
 						[ngClass]="{ hidden: !isUserDropdownOpen, inline: isUserDropdownOpen }"
 					>
@@ -80,8 +81,7 @@
 								<a
 									class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
 									routerLink="/profile"
-								>My profile</a
-								>
+								>My profile</a>
 							</li>
 							<li>
 								<a
@@ -94,88 +94,59 @@
 							class="py-1 text-gray-700 dark:text-gray-300"
 						>
 							<li>
-								<span class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-											(click)="auth.logout()">Sign out</span>
+								<span
+									class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+									(click)="auth.logout()"
+								>Sign out</span>
 							</li>
 						</ul>
 					</div>
-				} @else {
-					<app-login-button></app-login-button>
+				}
+				@else {
+					<app-login-button />
 				}
 			</div>
 		</div>
 	</nav>
 
-
-	@if (loggedInUser) {
-
-		<!-- Sidebar -->
-		<aside
-			aria-label="Sidenav"
-			class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
-			id="drawer-navigation"
-		>
-			<div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
-				<ul class="space-y-2">
-					<li>
-						<a
-							class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-							routerLink="/characters"
-							routerLinkActive="text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
-						>
-							<svg
-								aria-hidden="true"
-								class="w-6 h-6 text-gray-800 dark:text-white"
-								fill="none"
-								height="24"
-								viewBox="0 0 24 24"
-								width="24"
-								xmlns="http://www.w3.org/2000/svg"
+	<!-- Sidebar -->
+	<aside
+		aria-label="Sidenav"
+		class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+		id="drawer-navigation"
+	>
+		<div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+			<ul class="space-y-2">
+				@for (link of sidebarLinks; track link.title) {
+					@if (!link.loggedInOnly || (link.loggedInOnly && loggedInUser)) {
+						<li>
+							<a
+								class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+								[routerLink]="link.path"
+								routerLinkActive="text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
+								[routerLinkActiveOptions]="{ exact: true }"
 							>
-								<path
-									d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5"
-									stroke="currentColor"
-									stroke-linecap="round"
-									stroke-width="2"
-								/>
-							</svg>
-							<span class="flex-1 ml-3 text-left whitespace-nowrap">My Characters</span>
-						</a>
-					</li>
-					<li>
-						<a
-							class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-							routerLink="/sessions"
-							routerLinkActive="text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-700"
-						>
-							<svg
-								aria-hidden="true"
-								class="w-6 h-6 text-gray-800 dark:text-white"
-								fill="none"
-								height="24"
-								viewBox="0 0 24 24"
-								width="24"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z"
-									stroke="currentColor"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-								/>
-							</svg>
-							<span class="flex-1 ml-3 text-left whitespace-nowrap"
-							>Playing Sessions</span
-							>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</aside>
+								<svg
+									aria-hidden="true"
+									class="w-6 h-6 text-gray-800 dark:text-white"
+									fill="none"
+									height="24"
+									viewBox="0 0 24 24"
+									width="24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									{{ link.iconPath | safeHtml }}
+								</svg>
+								<span class="flex-1 ml-3 text-left whitespace-nowrap dark:text-white">{{ link.title }}</span>
+							</a>
+						</li>
+					}
+				}
+			</ul>
+		</div>
+	</aside>
 
-		<main class="p-4 md:ml-64 h-auto pt-20">
-
-		</main>
-	}
+	<main class="p-4 md:ml-64 h-auto pt-20">
+		<router-outlet />
+	</main>
 </div>
