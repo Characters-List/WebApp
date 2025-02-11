@@ -1,0 +1,7 @@
+<span class="flex justify-between text-base font-semibold text-gray-900 dark:text-white mb-4">
+	<h1 class="my-auto text-2xl">
+		New Character
+	</h1>
+</span>
+
+<app-character-form (cancel)="onCancelCreation()" (confirmed)="onCharacterCreated($event)"/>

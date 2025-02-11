@@ -1,0 +1,58 @@
+<div class="flex justify-between text-gray-800 dark:text-white">
+	<a
+		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
+		routerLink="/characters" title="Back to characters list">
+		<svg aria-hidden="true" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" height="24"
+				 viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+			<path d="m15 19-7-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+		</svg>
+
+		Back
+	</a>
+
+	<h1 class="text-2xl my-auto">{{ character?.name }}</h1>
+
+	<span class="flex gap-2">
+		@if (character) {
+			<a
+				[routerLink]="['/characters', character?.id, 'edit']"
+				class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white flex items-center justify-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-primary-700 hover:bg-primary-800 focus:ring-primary-300"
+				title="Edit character"
+			>
+				<svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" height="24" viewBox="0 0 24 24"
+						 width="24" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+						stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+						stroke-width="2"/>
+				</svg>
+			</a>
+
+			<app-delete-character-button [character]="character"/>
+		}
+	</span>
+</div>
+<article class="mt-4">
+	<dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+		<dt class="font-semibold">Name</dt>
+		<dd>{{ character?.name }}</dd>
+
+		<dt class="font-semibold">Class</dt>
+		<dd>
+			<a
+				[routerLink]="['/classes', character?.class?.id]"
+				class="text-primary-800 dark:text-primary-300 hover:underline">
+				{{ character?.class?.name }}
+			</a>
+		</dd>
+
+		<dt class="font-semibold">Date of birth</dt>
+		<dd>{{ character?.dateOfBirth?.toLocaleDateString() }}</dd>
+
+		<dt class="font-semibold">Gold</dt>
+		<dd>{{ character?.gold }}</dd>
+
+		<dt class="font-semibold">Experience</dt>
+		<dd>{{ character?.experience }}</dd>
+	</dl>
+</article>

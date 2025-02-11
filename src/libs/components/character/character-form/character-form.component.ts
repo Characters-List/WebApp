@@ -4,12 +4,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ApiService } from "@services/api/api.service";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { CharacterModel } from "@models/character.model";
-import { DateValidators } from "@validators/date.validator";
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
+import { DateValueAccessorDirective } from "@directives/date-value-accessor/date-value-accessor.directive";
+import { DateValidators } from "@validators/date.validator";
 
 @Component({
 	selector: "app-character-form",
-	imports: [ReactiveFormsModule],
+	imports: [ReactiveFormsModule, DateValueAccessorDirective],
 	templateUrl: "./character-form.component.html",
 	styleUrl: "./character-form.component.css",
 })
@@ -21,7 +22,15 @@ export class CharacterFormComponent implements OnInit {
 			[Validators.required, Validators.minLength(2), Validators.maxLength(50)],
 		],
 		classId: ["", Validators.required],
-		dateOfBirth: <Date>(<unknown>null),
+		dateOfBirth: [
+			<Date>(<unknown>null),
+			[
+				Validators.required,
+				DateValidators.validDate,
+				DateValidators.notInFuture,
+				DateValidators.notBefore(new Date(1900, 0, 1)),
+			],
+		],
 	});
 	classesAvailable: Array<CharacterClassModel> = [];
 
@@ -29,9 +38,9 @@ export class CharacterFormComponent implements OnInit {
 	currentCharacter?: CharacterModel;
 
 	@Output()
-	characterCreated: EventEmitter<CharacterModel> =
-		new EventEmitter<CharacterModel>();
-	@Output() characterUpdated = new EventEmitter<CharacterModel>();
+	confirmed: EventEmitter<CharacterModel> = new EventEmitter<CharacterModel>();
+	@Output()
+	cancel = new EventEmitter<void>();
 
 	constructor(
 		private apiService: ApiService,
@@ -39,13 +48,6 @@ export class CharacterFormComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.characterForm.controls.dateOfBirth.addValidators([
-			Validators.required,
-			DateValidators.validDate,
-			DateValidators.notInFuture,
-			DateValidators.notBefore(new Date(1900, 0, 1)),
-		]);
-
 		this.apiService.getClasses().subscribe((classes) => {
 			this.classesAvailable = classes;
 		});
@@ -54,11 +56,8 @@ export class CharacterFormComponent implements OnInit {
 			this.characterForm.setValue({
 				name: this.currentCharacter.name,
 				classId: this.currentCharacter.class.id,
-				dateOfBirth: null,
+				dateOfBirth: this.currentCharacter.dateOfBirth,
 			});
-			this.characterForm.controls.dateOfBirth.patchValue(
-				this.currentCharacter.dateOfBirth
-			);
 		}
 	}
 
@@ -68,41 +67,41 @@ export class CharacterFormComponent implements OnInit {
 			"info"
 		);
 
-		this.apiService
-			.createCharacter({
-				name: this.characterForm.value.name as string,
-				classId: this.characterForm.value.classId as string,
-				dateOfBirth: new Date(
-					this.characterForm.value.dateOfBirth as unknown as string
-				),
-			})
-			.subscribe({
-				next: (response) => {
-					this.toastService.clearToast(toastId);
+		(this.currentCharacter
+			? this.apiService.updateCharacter({
+					id: this.currentCharacter.id,
+					name: this.characterForm.value.name!,
+					classId: this.characterForm.value.classId!,
+					dateOfBirth: this.characterForm.value.dateOfBirth!,
+				})
+			: this.apiService.createCharacter({
+					name: this.characterForm.value.name!,
+					classId: this.characterForm.value.classId!,
+					dateOfBirth: this.characterForm.value.dateOfBirth!,
+				})
+		).subscribe({
+			next: (response) => {
+				this.toastService.clearToast(toastId);
 
-					if (this.currentCharacter) {
-						this.toastService.showToast(
-							"Character updated successfully",
-							"success"
-						);
-						this.characterUpdated.emit(response);
-						return;
-					}
-					this.toastService.showToast(
-						"Character created successfully",
-						"success"
-					);
-					this.characterCreated.emit(response);
-				},
-				error: (error) => {
-					console.error(error);
+				this.toastService.showToast(
+					`Character ${this.currentCharacter ? "updated" : "created"} successfully`,
+					"success"
+				);
+				this.confirmed.emit(response);
+			},
+			error: (error) => {
+				console.error(error);
 
-					this.toastService.clearToast(toastId);
-					this.toastService.showToast(
-						`Error while ${this.currentCharacter ? "updating" : "creating"} character`,
-						"error"
-					);
-				},
-			});
+				this.toastService.clearToast(toastId);
+				this.toastService.showToast(
+					`Error while ${this.currentCharacter ? "updating" : "creating"} character`,
+					"error"
+				);
+			},
+		});
+	}
+
+	onCancelClick() {
+		this.cancel.emit();
 	}
 }

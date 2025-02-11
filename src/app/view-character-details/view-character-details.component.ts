@@ -5,20 +5,15 @@ import { AuthService } from "@auth0/auth0-angular";
 import { CharacterModel } from "@models/character.model";
 import { ApiService } from "@services/api/api.service";
 import { DeleteCharacterButtonComponent } from "@components/character/delete-character-button/delete-character-button.component";
-import { EditCharacterButtonComponent } from "@components/character/edit-character-button/edit-character-button.component";
 
 @Component({
-	selector: "app-specific-character",
-	imports: [
-		DeleteCharacterButtonComponent,
-		EditCharacterButtonComponent,
-		RouterLink,
-	],
-	templateUrl: "./specific-character.component.html",
-	styleUrl: "./specific-character.component.css",
+	selector: "app-view-character-details",
+	imports: [DeleteCharacterButtonComponent, RouterLink],
+	templateUrl: "./view-character-details.component.html",
+	styleUrl: "./view-character-details.component.css",
 })
-export class SpecificCharacterComponent implements OnInit {
-	character!: CharacterModel;
+export class ViewCharacterDetailsComponent implements OnInit {
+	character: CharacterModel | null = null;
 
 	constructor(
 		private router: Router,

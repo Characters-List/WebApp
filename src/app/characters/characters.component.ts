@@ -1,14 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 import { ApiService } from "@services/api/api.service";
 import { CharacterModel } from "@models/character.model";
 import { CharacterCardComponent } from "@components/character/character-card/character-card.component";
-import { NewCharacterButtonComponent } from "@components/character/new-character-button/new-character-button.component";
 
 @Component({
 	selector: "app-characters",
-	imports: [CharacterCardComponent, NewCharacterButtonComponent],
+	imports: [CharacterCardComponent, RouterLink],
 	templateUrl: "./characters.component.html",
 	styleUrl: "./characters.component.css",
 })
@@ -28,12 +27,5 @@ export class CharactersComponent implements OnInit {
 
 	onCharacterClick(character: CharacterModel) {
 		void this.router.navigate(["/characters", character.id]);
-	}
-
-	onCharacterCreated(character: CharacterModel) {
-		if (!this.userCharacters) {
-			this.userCharacters = [];
-		}
-		this.userCharacters.push(character);
 	}
 }

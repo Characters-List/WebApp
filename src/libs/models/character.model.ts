@@ -22,6 +22,6 @@ export type CharacterCreationModel = Omit<
 	classId: string;
 };
 
-export type SpecificCharacterModel = CharacterModel & {
-	userId: string;
+export type CharacterUpdateModel = Partial<CharacterCreationModel> & {
+	id: string;
 };

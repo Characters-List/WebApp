@@ -1,0 +1,9 @@
+<span class="flex justify-between text-base font-semibold text-gray-900 dark:text-white mb-4">
+	<h1 class="my-auto text-2xl">
+		Update {{ character?.name }}
+	</h1>
+</span>
+
+@if (character) {
+	<app-character-form (cancel)="onCancel()" (confirmed)="onCharacterUpdated()" [currentCharacter]="character"/>
+}

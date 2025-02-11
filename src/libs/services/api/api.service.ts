@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import {
 	CharacterCreationModel,
 	CharacterModel,
+	CharacterUpdateModel,
 } from "@models/character.model";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { map } from "rxjs";
@@ -72,5 +73,15 @@ export class ApiService {
 		return this.http.delete(`${API_URL}/Characters/${characterId}`, {
 			withCredentials: true,
 		});
+	}
+
+	updateCharacter(character: CharacterUpdateModel) {
+		return this.http.put<CharacterModel>(
+			`${API_URL}/Characters/${character.id}`,
+			character,
+			{
+				withCredentials: true,
+			}
+		);
 	}
 }

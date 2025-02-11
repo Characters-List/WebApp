@@ -6,12 +6,12 @@ import { CharacterClassModel } from "@models/characterClass.model";
 import { CharacterModel } from "@models/character.model";
 
 @Component({
-	selector: "app-specific-class",
+	selector: "app-view-class-details",
 	imports: [RouterLink],
-	templateUrl: "./specific-class.component.html",
-	styleUrl: "./specific-class.component.css",
+	templateUrl: "./view-class-details.component.html",
+	styleUrl: "./view-class-details.component.css",
 })
-export class SpecificClassComponent implements OnInit {
+export class ViewClassDetailsComponent implements OnInit {
 	characterClass: CharacterClassModel | null = null;
 	characters: Array<CharacterModel> = [];
 
