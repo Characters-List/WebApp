@@ -1,13 +1,15 @@
 <div class="flex justify-between text-gray-800 dark:text-white">
 	<a
-		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
-		routerLink="/characters" title="Back to characters list">
+		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 hover:cursor-pointer"
+		routerLink="/characters"
+		title="Go back to characters list"
+	>
 		<svg aria-hidden="true" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" height="24"
 				 viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 			<path d="m15 19-7-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
 		</svg>
 
-		Back
+		Back to characters
 	</a>
 
 	<h1 class="text-2xl my-auto">{{ character?.name }}</h1>
@@ -15,7 +17,7 @@
 	<span class="flex gap-2">
 		@if (character) {
 			<a
-				[routerLink]="['/characters', character?.id, 'edit']"
+				[routerLink]="['/characters', character.id, 'edit']"
 				class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white flex items-center justify-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-primary-700 hover:bg-primary-800 focus:ring-primary-300"
 				title="Edit character"
 			>

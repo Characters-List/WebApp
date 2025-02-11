@@ -5,5 +5,5 @@
 </span>
 
 @if (character) {
-	<app-character-form (cancel)="onCancel()" (confirmed)="onCharacterUpdated()" [currentCharacter]="character"/>
+	<app-character-form (canceled)="onCancel()" (confirmed)="onCharacterUpdated()" [currentCharacter]="character"/>
 }

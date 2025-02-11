@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { Location } from "@angular/common";
 import { AuthService } from "@auth0/auth0-angular";
 
 import { CharacterModel } from "@models/character.model";
@@ -19,7 +20,8 @@ export class ViewCharacterDetailsComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private authService: AuthService,
-		private apiService: ApiService
+		private apiService: ApiService,
+		private location: Location
 	) {}
 
 	ngOnInit() {
@@ -45,5 +47,9 @@ export class ViewCharacterDetailsComponent implements OnInit {
 				this.character = character;
 			});
 		});
+	}
+
+	onBackClick() {
+		this.location.back();
 	}
 }

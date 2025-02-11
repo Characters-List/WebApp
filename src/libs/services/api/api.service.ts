@@ -6,7 +6,11 @@ import {
 	CharacterModel,
 	CharacterUpdateModel,
 } from "@models/character.model";
-import { CharacterClassModel } from "@models/characterClass.model";
+import {
+	CharacterClassCreationModel,
+	CharacterClassModel,
+	CharacterClassUpdateModel,
+} from "@models/characterClass.model";
 import { map } from "rxjs";
 
 const API_URL = "https://localhost:7131/api";
@@ -83,5 +87,49 @@ export class ApiService {
 				withCredentials: true,
 			}
 		);
+	}
+
+	getCharacterClasses() {
+		return this.http.get<Array<CharacterClassModel>>(
+			`${API_URL}/CharacterClasses`,
+			{
+				withCredentials: true,
+			}
+		);
+	}
+
+	getCharacterClass(id: string) {
+		return this.http.get<CharacterClassModel>(
+			`${API_URL}/CharacterClasses/${id}`,
+			{
+				withCredentials: true,
+			}
+		);
+	}
+
+	createCharacterClass(characterClass: CharacterClassCreationModel) {
+		return this.http.post<CharacterClassModel>(
+			`${API_URL}/CharacterClasses`,
+			characterClass,
+			{
+				withCredentials: true,
+			}
+		);
+	}
+
+	updateCharacterClass(characterClass: CharacterClassUpdateModel) {
+		return this.http.put<CharacterClassModel>(
+			`${API_URL}/CharacterClasses/${characterClass.id}`,
+			characterClass,
+			{
+				withCredentials: true,
+			}
+		);
+	}
+
+	deleteCharacterClass(id: string) {
+		return this.http.delete(`${API_URL}/CharacterClasses/${id}`, {
+			withCredentials: true,
+		});
 	}
 }

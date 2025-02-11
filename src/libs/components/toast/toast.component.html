@@ -1,6 +1,6 @@
 <div class="toast-container">
 	@for (toast of toasts; track toast.id) {
-		<div class="toast {{ toast.type }} flex items-center justify-between px-4 py-2 my-2 border-l-4 rounded-lg shadow-lg gap-2">
+		<div class="toast {{ toast.type }} flex items-center justify-between px-4 py-2 my-2 rounded-lg shadow-lg gap-2">
 			@switch (toast.type) {
 				@case ("info") {
 					<svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

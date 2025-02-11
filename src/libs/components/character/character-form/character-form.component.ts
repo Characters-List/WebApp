@@ -40,7 +40,7 @@ export class CharacterFormComponent implements OnInit {
 	@Output()
 	confirmed: EventEmitter<CharacterModel> = new EventEmitter<CharacterModel>();
 	@Output()
-	cancel = new EventEmitter<void>();
+	canceled = new EventEmitter<void>();
 
 	constructor(
 		private apiService: ApiService,
@@ -102,6 +102,6 @@ export class CharacterFormComponent implements OnInit {
 	}
 
 	onCancelClick() {
-		this.cancel.emit();
+		this.canceled.emit();
 	}
 }

@@ -13,7 +13,6 @@ type SidebarLink = {
 	path: `/${string}`;
 	iconPath: `<path d="${string} stroke="${string}" stroke-linecap="${string}" stroke-width="${number}" />`;
 	title: string;
-	loggedInOnly?: boolean;
 };
 
 const sidebarLinks: Array<SidebarLink> = [
@@ -21,14 +20,18 @@ const sidebarLinks: Array<SidebarLink> = [
 		path: "/characters",
 		iconPath: `<path d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5" stroke="currentColor" stroke-linecap="round" stroke-width="2" />`,
 		title: "Characters",
-		loggedInOnly: true,
 	},
 	{
-		path: "/sessions",
-		iconPath: `<path d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
-		title: "Playing Sessions",
-		loggedInOnly: true,
+		path: "/classes",
+		iconPath: `<path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
+		title: "Classes",
 	},
+	// {
+	// 	path: "/sessions",
+	// 	iconPath: `<path d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
+	// 	title: "Playing Sessions",
+	// 	loggedInOnly: true,
+	// },
 ];
 
 @Component({
