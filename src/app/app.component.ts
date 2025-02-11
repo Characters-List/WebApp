@@ -26,12 +26,6 @@ const sidebarLinks: Array<SidebarLink> = [
 		iconPath: `<path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
 		title: "Classes",
 	},
-	// {
-	// 	path: "/sessions",
-	// 	iconPath: `<path d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />`,
-	// 	title: "Playing Sessions",
-	// 	loggedInOnly: true,
-	// },
 ];
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { Location } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { AuthService } from "@auth0/auth0-angular";
 
 import { CharacterModel } from "@models/character.model";
@@ -9,7 +9,7 @@ import { CharacterApiProxyService } from "@services/api/character-api-proxy.serv
 
 @Component({
 	selector: "app-view-character-details",
-	imports: [DeleteCharacterButtonComponent, RouterLink],
+	imports: [DeleteCharacterButtonComponent, RouterLink, DatePipe],
 	templateUrl: "./view-character-details.component.html",
 	styleUrl: "./view-character-details.component.css",
 })
@@ -20,8 +20,7 @@ export class ViewCharacterDetailsComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private authService: AuthService,
-		private characterApiService: CharacterApiProxyService,
-		private location: Location
+		private characterApiService: CharacterApiProxyService
 	) {}
 
 	ngOnInit() {
@@ -47,9 +46,5 @@ export class ViewCharacterDetailsComponent implements OnInit {
 				this.character = character;
 			});
 		});
-	}
-
-	onBackClick() {
-		this.location.back();
 	}
 }
