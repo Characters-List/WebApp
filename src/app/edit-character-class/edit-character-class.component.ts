@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "@services/api/api.service";
 import { AuthService } from "@auth0/auth0-angular";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { CharacterClassFormComponent } from "@components/character-class/character-class-form/character-class-form.component";
+import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
 
 @Component({
 	selector: "app-edit-character-class",
@@ -18,7 +18,7 @@ export class EditCharacterClassComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private authService: AuthService,
-		private apiService: ApiService
+		private classApiService: CharacterClassApiProxyService
 	) {}
 
 	ngOnInit() {
@@ -44,7 +44,7 @@ export class EditCharacterClassComponent implements OnInit {
 				return;
 			}
 
-			this.apiService.getCharacterClass(id).subscribe((characterClass) => {
+			this.classApiService.getById(id).subscribe((characterClass) => {
 				if (!characterClass) {
 					void this.router.navigate(["/classes"]);
 					return;

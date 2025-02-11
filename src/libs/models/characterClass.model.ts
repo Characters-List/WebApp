@@ -7,6 +7,4 @@ export type CharacterClassModel = {
 
 export type CharacterClassCreationModel = Omit<CharacterClassModel, "id">;
 
-export type CharacterClassUpdateModel = Partial<CharacterClassCreationModel> & {
-	id: string;
-};
+export type CharacterClassUpdateModel = Partial<CharacterClassCreationModel>;

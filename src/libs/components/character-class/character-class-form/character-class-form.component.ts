@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { CharacterClassModel } from "@models/characterClass.model";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ApiService } from "@services/api/api.service";
+
+import { CharacterClassModel } from "@models/characterClass.model";
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
+import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
 
 @Component({
 	selector: "app-character-class-form",
@@ -38,7 +39,7 @@ export class CharacterClassFormComponent implements OnInit {
 	@Output() canceled = new EventEmitter<void>();
 
 	constructor(
-		private apiService: ApiService,
+		private classApiService: CharacterClassApiProxyService,
 		private toastService: ToastProviderService
 	) {}
 
@@ -63,8 +64,7 @@ export class CharacterClassFormComponent implements OnInit {
 		);
 
 		(this.currentClass
-			? this.apiService.updateCharacterClass({
-					id: this.currentClass.id,
+			? this.classApiService.put(this.currentClass.id, {
 					name:
 						this.characterClassForm.value.name &&
 						this.characterClassForm.value.name !== this.currentClass.name
@@ -83,7 +83,7 @@ export class CharacterClassFormComponent implements OnInit {
 							? this.characterClassForm.value.maxHealth
 							: undefined,
 				})
-			: this.apiService.createCharacterClass({
+			: this.classApiService.post({
 					name: this.characterClassForm.value.name!,
 					description: this.characterClassForm.value.description!,
 					maxHealth: this.characterClassForm.value.maxHealth!,

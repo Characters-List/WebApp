@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import { ApiService } from "@services/api/api.service";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { AuthService } from "@auth0/auth0-angular";
 import { CharacterClassCardComponent } from "@components/character-class/character-class-card/character-class-card.component";
+import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
 
 type UserType = "admin" | "user";
 
@@ -20,7 +20,7 @@ export class CharacterClassesComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private authService: AuthService,
-		private apiService: ApiService
+		private classApiService: CharacterClassApiProxyService
 	) {}
 
 	ngOnInit() {
@@ -34,7 +34,7 @@ export class CharacterClassesComponent implements OnInit {
 			}
 		});
 
-		this.apiService.getCharacterClasses().subscribe((classes) => {
+		this.classApiService.get().subscribe((classes) => {
 			if (!classes) {
 				void this.router.navigate(["/"]);
 				return;

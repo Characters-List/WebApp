@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-
-import { ApiService } from "@services/api/api.service";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { CharacterModel } from "@models/character.model";
 import { DeleteCharacterClassButtonComponent } from "@components/character-class/delete-character-class-button/delete-character-class-button.component";
 import { AuthService } from "@auth0/auth0-angular";
+import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
 
 type UserType = "admin" | "user";
 
@@ -21,7 +20,7 @@ export class ViewClassDetailsComponent implements OnInit {
 	userType: UserType = "user";
 
 	constructor(
-		private apiService: ApiService,
+		private classApiService: CharacterClassApiProxyService,
 		private authService: AuthService,
 		private route: ActivatedRoute,
 		private router: Router
@@ -45,7 +44,7 @@ export class ViewClassDetailsComponent implements OnInit {
 			}
 		});
 
-		this.apiService.getClass(id).subscribe((characterClass) => {
+		this.classApiService.getById(id).subscribe((characterClass) => {
 			if (!characterClass) {
 				void this.router.navigate(["/"]);
 				return;
@@ -53,7 +52,7 @@ export class ViewClassDetailsComponent implements OnInit {
 
 			this.characterClass = characterClass;
 
-			this.apiService.getCharactersByClass(id).subscribe((characters) => {
+			this.classApiService.getCharactersForClass(id).subscribe((characters) => {
 				this.characters = characters;
 			});
 		});

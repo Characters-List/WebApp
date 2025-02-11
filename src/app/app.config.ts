@@ -7,6 +7,7 @@ import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { authHttpInterceptorFn, provideAuth0 } from "@auth0/auth0-angular";
 
 import { routes } from "./app.routes";
+import { provideApiProxy } from "@services/api/api-proxy.provider";
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -35,5 +36,6 @@ export const appConfig: ApplicationConfig = {
 				],
 			},
 		}),
+		provideApiProxy(),
 	],
 };

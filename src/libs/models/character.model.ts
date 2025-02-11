@@ -22,6 +22,4 @@ export type CharacterCreationModel = Omit<
 	classId: string;
 };
 
-export type CharacterUpdateModel = Partial<CharacterCreationModel> & {
-	id: string;
-};
+export type CharacterUpdateModel = Partial<CharacterCreationModel>;

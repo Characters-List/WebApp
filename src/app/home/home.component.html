@@ -1,7 +1,13 @@
 <span class="dark:text-white">
 	<div class="">
-		<img alt="Board games" class="w-1/2 mx-auto" src="/undraw-character-drawing.svg">
+		<img
+			alt="Board games"
+			class="w-1/2 mx-auto"
+			src="/public/undraw-character-drawing.svg"
+		/>
 	</div>
-	<span class="text-center text-white">Let's play board games together!</span>
-	<span class="text-center text-white">Please <a (click)="login()">login</a> to continue.</span>
+	<p class="text-center text-black">Let's play board games together, online!</p>
+	@if (!(userLoggedIn$ | async)) {
+		<p class="text-center text-black">First, <a (click)="login()">login</a> to continue.</p>
+	}
 </span>

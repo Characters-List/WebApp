@@ -4,8 +4,8 @@ import { Location } from "@angular/common";
 import { AuthService } from "@auth0/auth0-angular";
 
 import { CharacterModel } from "@models/character.model";
-import { ApiService } from "@services/api/api.service";
 import { DeleteCharacterButtonComponent } from "@components/character/delete-character-button/delete-character-button.component";
+import { CharacterApiProxyService } from "@services/api/character-api-proxy.service";
 
 @Component({
 	selector: "app-view-character-details",
@@ -20,7 +20,7 @@ export class ViewCharacterDetailsComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private authService: AuthService,
-		private apiService: ApiService,
+		private characterApiService: CharacterApiProxyService,
 		private location: Location
 	) {}
 
@@ -38,7 +38,7 @@ export class ViewCharacterDetailsComponent implements OnInit {
 				return;
 			}
 
-			this.apiService.getCharacter(id).subscribe((character) => {
+			this.characterApiService.getById(id).subscribe((character) => {
 				if (!character) {
 					void this.router.navigate(["/characters"]);
 					return;

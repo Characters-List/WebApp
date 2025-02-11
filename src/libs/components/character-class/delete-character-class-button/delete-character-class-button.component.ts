@@ -1,8 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { Router } from "@angular/router";
-import { ApiService } from "@services/api/api.service";
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
+import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
 
 @Component({
 	selector: "app-delete-character-class-button",
@@ -17,7 +17,7 @@ export class DeleteCharacterClassButtonComponent {
 
 	constructor(
 		private router: Router,
-		private apiService: ApiService,
+		private classApiService: CharacterClassApiProxyService,
 		private toastService: ToastProviderService
 	) {}
 
@@ -28,7 +28,7 @@ export class DeleteCharacterClassButtonComponent {
 	onDeleteClick() {
 		const toastId = this.toastService.showToast("Deleting character class...");
 
-		this.apiService.deleteCharacterClass(this.characterClass.id).subscribe({
+		this.classApiService.delete(this.characterClass.id).subscribe({
 			next: () => {
 				this.toastService.clearToast(toastId);
 				this.toastService.showToast(

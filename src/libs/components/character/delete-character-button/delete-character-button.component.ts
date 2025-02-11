@@ -1,9 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { Router } from "@angular/router";
-
-import { ApiService } from "@services/api/api.service";
 import { CharacterModel } from "@models/character.model";
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
+import { CharacterApiProxyService } from "@services/api/character-api-proxy.service";
 
 @Component({
 	selector: "app-delete-character-button",
@@ -19,7 +18,7 @@ export class DeleteCharacterButtonComponent {
 
 	constructor(
 		private toastService: ToastProviderService,
-		private apiService: ApiService,
+		private apiService: CharacterApiProxyService,
 		private router: Router
 	) {}
 
@@ -33,7 +32,7 @@ export class DeleteCharacterButtonComponent {
 			"info"
 		);
 
-		this.apiService.deleteCharacter(this.character.id).subscribe({
+		this.apiService.delete(this.character.id).subscribe({
 			next: () => {
 				this.toastService.clearToast(toastId);
 				this.toastService.showToast(

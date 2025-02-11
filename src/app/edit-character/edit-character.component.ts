@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { CharacterModel } from "@models/character.model";
 import { CharacterFormComponent } from "@components/character/character-form/character-form.component";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ApiService } from "@services/api/api.service";
+import { CharacterApiProxyService } from "@services/api/character-api-proxy.service";
 
 @Component({
 	selector: "app-edit-character-button",
@@ -17,7 +17,7 @@ export class EditCharacterComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private route: ActivatedRoute,
-		private apiService: ApiService
+		private characterApiService: CharacterApiProxyService
 	) {}
 
 	ngOnInit() {
@@ -28,7 +28,7 @@ export class EditCharacterComponent implements OnInit {
 			return;
 		}
 
-		this.apiService.getCharacter(id).subscribe((character) => {
+		this.characterApiService.getById(id).subscribe((character) => {
 			if (!character) {
 				void this.router.navigate(["/characters"]);
 				return;

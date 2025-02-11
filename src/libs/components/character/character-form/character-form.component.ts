@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-
-import { ApiService } from "@services/api/api.service";
 import { CharacterClassModel } from "@models/characterClass.model";
 import { CharacterModel } from "@models/character.model";
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
 import { DateValueAccessorDirective } from "@directives/date-value-accessor/date-value-accessor.directive";
 import { DateValidators } from "@validators/date.validator";
+import { CharacterApiProxyService } from "@services/api/character-api-proxy.service";
+import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
 
 @Component({
 	selector: "app-character-form",
@@ -43,12 +43,13 @@ export class CharacterFormComponent implements OnInit {
 	canceled = new EventEmitter<void>();
 
 	constructor(
-		private apiService: ApiService,
+		private characterApiProxyService: CharacterApiProxyService,
+		private characterClassApiProxyService: CharacterClassApiProxyService,
 		private toastService: ToastProviderService
 	) {}
 
 	ngOnInit(): void {
-		this.apiService.getClasses().subscribe((classes) => {
+		this.characterClassApiProxyService.get().subscribe((classes) => {
 			this.classesAvailable = classes;
 		});
 
@@ -68,13 +69,12 @@ export class CharacterFormComponent implements OnInit {
 		);
 
 		(this.currentCharacter
-			? this.apiService.updateCharacter({
-					id: this.currentCharacter.id,
+			? this.characterApiProxyService.put(this.currentCharacter.id, {
 					name: this.characterForm.value.name!,
 					classId: this.characterForm.value.classId!,
 					dateOfBirth: this.characterForm.value.dateOfBirth!,
 				})
-			: this.apiService.createCharacter({
+			: this.characterApiProxyService.post({
 					name: this.characterForm.value.name!,
 					classId: this.characterForm.value.classId!,
 					dateOfBirth: this.characterForm.value.dateOfBirth!,
