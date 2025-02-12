@@ -20,32 +20,6 @@ cd WebApp
 npm install
 ```
 
-Then, make sure to have installed the [CharactersListAPI](https://github.com/Characters-List/API) and have it running.
-
-When the API is running, you can generate the api proxy by running:
-
-```bash
-npm run gen-api <api-url>
-```
-
-with `<api-url>` being the URL where the API is running. For example:
-
-```bash
-npm run gen-api http://localhost:7131
-```
-
-This will generate the API proxy in the `src/app/api` directory.
-
-After this, put the API URL in the `src/environments/environment.ts` file with all the necessary data. For example:
-
-```typescript
-import {Environment} from "./environment.model";
-
-export const environment: Environment = {
-	apiUrl: 'http://localhost:7131'
-};
-```
-
 ## Development server
 
 To start a local development server, run:
