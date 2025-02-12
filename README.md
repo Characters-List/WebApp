@@ -2,6 +2,50 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
 
+## Prerequisites
+
+Before you can build this project, you must have installed the following:
+
+- [Node.js](https://nodejs.org/en/download/)
+- [Angular CLI](https://angular.io/cli)
+- [Git](https://git-scm.com/downloads)
+
+## Installation
+
+To install the project, clone the repository and install the dependencies:
+
+```bash
+git clone
+cd WebApp
+npm install
+```
+
+Then, make sure to have installed the [CharactersListAPI](https://github.com/Characters-List/API) and have it running.
+
+When the API is running, you can generate the api proxy by running:
+
+```bash
+npm run gen-api <api-url>
+```
+
+with `<api-url>` being the URL where the API is running. For example:
+
+```bash
+npm run gen-api http://localhost:7131
+```
+
+This will generate the API proxy in the `src/app/api` directory.
+
+After this, put the API URL in the `src/environments/environment.ts` file with all the necessary data. For example:
+
+```typescript
+import {Environment} from "./environment.model";
+
+export const environment: Environment = {
+	apiUrl: 'http://localhost:7131'
+};
+```
+
 ## Development server
 
 To start a local development server, run:

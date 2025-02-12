@@ -39,6 +39,12 @@
 			"@directives/*": [
 				"./src/libs/directives/*"
 			],
+			"@guards/*": [
+				"./src/libs/guards/*"
+			],
+			"@environment/*": [
+				"./src/environments/*"
+			]
 		}
 	},
 	"angularCompilerOptions": {

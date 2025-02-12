@@ -1,6 +1,7 @@
 <div class="flex justify-between text-gray-800 dark:text-white">
 	<a
-		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 hover:cursor-pointer" role="button"
+		class="flex justify-between my-auto items-center bg-gray-200 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 hover:cursor-pointer"
+		role="button"
 		routerLink="/classes" title="Go back to classes list"
 	>
 		<svg aria-hidden="true" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" height="24"
@@ -16,7 +17,7 @@
 	</h1>
 
 	<span class="flex gap-2">
-		@if (characterClass && userType === "admin") {
+		@if (characterClass && authService.user?.permissions?.includes("admin")) {
 			<a
 				[routerLink]="['/classes', characterClass.id, 'edit']"
 				class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white flex items-center justify-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-primary-700 hover:bg-primary-800 focus:ring-primary-300"
@@ -95,7 +96,8 @@
 							{{ character.health.current }} / {{ character.health.max }}
 						</td>
 						<td class="px-6 py-4">
-							<a routerLink="/characters/{{ character.id }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-600">View</a>
+							<a routerLink="/characters/{{ character.id }}"
+								 class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-600">View</a>
 						</td>
 					</tr>
 				}

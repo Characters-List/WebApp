@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 
-import { CharacterClassModel } from "@models/characterClass.model";
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
-import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
+import { CharacterClassDto } from "@services/api/models/character-class-dto";
+import { CharacterClassesService } from "@services/api/services/character-classes.service";
 
 @Component({
 	selector: "app-character-class-form",
@@ -33,13 +33,13 @@ export class CharacterClassFormComponent implements OnInit {
 	});
 
 	@Input()
-	currentClass: CharacterClassModel | null = null;
+	currentClass: CharacterClassDto | null = null;
 
-	@Output() confirmed = new EventEmitter<CharacterClassModel>();
+	@Output() confirmed = new EventEmitter<void>();
 	@Output() canceled = new EventEmitter<void>();
 
 	constructor(
-		private classApiService: CharacterClassApiProxyService,
+		private classApiService: CharacterClassesService,
 		private toastService: ToastProviderService
 	) {}
 
@@ -64,38 +64,43 @@ export class CharacterClassFormComponent implements OnInit {
 		);
 
 		(this.currentClass
-			? this.classApiService.put(this.currentClass.id, {
-					name:
-						this.characterClassForm.value.name &&
-						this.characterClassForm.value.name !== this.currentClass.name
-							? this.characterClassForm.value.name
-							: undefined,
-					description:
-						this.characterClassForm.value.description &&
-						this.characterClassForm.value.description !==
-							this.currentClass.description
-							? this.characterClassForm.value.description
-							: undefined,
-					maxHealth:
-						this.characterClassForm.value.maxHealth &&
-						this.characterClassForm.value.maxHealth !==
-							this.currentClass.maxHealth
-							? this.characterClassForm.value.maxHealth
-							: undefined,
+			? this.classApiService.apiV1CharacterClassesIdPut({
+					id: this.currentClass.id,
+					body: {
+						name:
+							this.characterClassForm.value.name &&
+							this.characterClassForm.value.name !== this.currentClass.name
+								? this.characterClassForm.value.name
+								: undefined,
+						description:
+							this.characterClassForm.value.description &&
+							this.characterClassForm.value.description !==
+								this.currentClass.description
+								? this.characterClassForm.value.description
+								: undefined,
+						maxHealth:
+							this.characterClassForm.value.maxHealth &&
+							this.characterClassForm.value.maxHealth !==
+								this.currentClass.maxHealth
+								? this.characterClassForm.value.maxHealth
+								: undefined,
+					},
 				})
-			: this.classApiService.post({
-					name: this.characterClassForm.value.name!,
-					description: this.characterClassForm.value.description!,
-					maxHealth: this.characterClassForm.value.maxHealth!,
+			: this.classApiService.apiV1CharacterClassesPost({
+					body: {
+						name: this.characterClassForm.value.name!,
+						description: this.characterClassForm.value.description!,
+						maxHealth: this.characterClassForm.value.maxHealth!,
+					},
 				})
 		).subscribe({
-			next: (characterClass) => {
+			next: () => {
 				this.toastService.clearToast(toastId);
 				this.toastService.showToast(
 					`Character class ${this.currentClass ? "updated" : "created"} successfully`,
 					"success"
 				);
-				this.confirmed.emit(characterClass);
+				this.confirmed.emit();
 			},
 			error: () => {
 				this.toastService.clearToast(toastId);

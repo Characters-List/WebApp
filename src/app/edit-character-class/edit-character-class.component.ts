@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CharacterClassModel } from "@models/characterClass.model";
+
 import { CharacterClassFormComponent } from "@components/character-class/character-class-form/character-class-form.component";
-import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
+import { CharacterClassDto } from "@services/api/models/character-class-dto";
 
 @Component({
 	selector: "app-edit-character-class",
@@ -11,29 +11,16 @@ import { CharacterClassApiProxyService } from "@services/api/character-class-api
 	styleUrl: "./edit-character-class.component.css",
 })
 export class EditCharacterClassComponent implements OnInit {
-	characterClass: CharacterClassModel | null = null;
+	characterClass: CharacterClassDto | null = null;
 
 	constructor(
 		private router: Router,
-		private route: ActivatedRoute,
-		private classApiService: CharacterClassApiProxyService
+		private route: ActivatedRoute
 	) {}
 
 	ngOnInit() {
-		const id = this.route.snapshot.paramMap.get("id");
-
-		if (!id) {
-			void this.router.navigate(["/classes"]);
-			return;
-		}
-
-		this.classApiService.getById(id).subscribe((characterClass) => {
-			if (!characterClass) {
-				void this.router.navigate(["/classes"]);
-				return;
-			}
-
-			this.characterClass = characterClass;
+		this.route.data.subscribe((data) => {
+			this.characterClass = data["characterClass"];
 		});
 	}
 

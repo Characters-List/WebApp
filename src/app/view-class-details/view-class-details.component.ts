@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { CharacterClassModel } from "@models/characterClass.model";
-import { CharacterModel } from "@models/character.model";
+import { ActivatedRoute, RouterLink } from "@angular/router";
+
 import { DeleteCharacterClassButtonComponent } from "@components/character-class/delete-character-class-button/delete-character-class-button.component";
-import { AuthService } from "@auth0/auth0-angular";
-import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
+import { CharacterClassDto, CharacterDto } from "@services/api/models";
+import { AuthenticationService } from "@services/authentication/authentication.service";
+import { CharacterClassesService } from "@services/api/services/character-classes.service";
 
 type UserType = "admin" | "user";
 
@@ -15,46 +15,26 @@ type UserType = "admin" | "user";
 	styleUrl: "./view-class-details.component.css",
 })
 export class ViewClassDetailsComponent implements OnInit {
-	characterClass: CharacterClassModel | null = null;
-	characters: Array<CharacterModel> = [];
-	userType: UserType = "user";
+	characterClass: CharacterClassDto | null = null;
+	characters: Array<CharacterDto> = [];
 
 	constructor(
-		private classApiService: CharacterClassApiProxyService,
-		private authService: AuthService,
 		private route: ActivatedRoute,
-		private router: Router
+		protected authService: AuthenticationService,
+		private characterClassesService: CharacterClassesService
 	) {}
 
 	ngOnInit(): void {
-		const id = this.route.snapshot.paramMap.get("id");
+		this.route.data.subscribe((data) => {
+			this.characterClass = data["characterClass"] as CharacterClassDto;
 
-		if (!id) {
-			void this.router.navigate(["/"]);
-			return;
-		}
-
-		this.authService.getAccessTokenSilently().subscribe((token) => {
-			const parsedToken = JSON.parse(atob(token.split(".")[1])) as {
-				permissions: Array<string>;
-			};
-
-			if (parsedToken.permissions.includes("admin")) {
-				this.userType = "admin";
-			}
-		});
-
-		this.classApiService.getById(id).subscribe((characterClass) => {
-			if (!characterClass) {
-				void this.router.navigate(["/"]);
-				return;
-			}
-
-			this.characterClass = characterClass;
-
-			this.classApiService.getCharactersForClass(id).subscribe((characters) => {
-				this.characters = characters;
-			});
+			this.characterClassesService
+				.apiV1CharacterClassesIdCharactersGet$Json({
+					id: this.characterClass.id,
+				})
+				.subscribe((data) => {
+					this.characters = data;
+				});
 		});
 	}
 }

@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { CharacterClassModel } from "@models/characterClass.model";
-import { CharacterModel } from "@models/character.model";
+
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
 import { DateValueAccessorDirective } from "@directives/date-value-accessor/date-value-accessor.directive";
 import { DateValidators } from "@validators/date.validator";
-import { CharacterApiProxyService } from "@services/api/character-api-proxy.service";
-import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
+import { CharacterClassDto } from "@services/api/models/character-class-dto";
+import { CharacterDto } from "@services/api/models/character-dto";
+import { CharactersService } from "@services/api/services/characters.service";
+import { CharacterClassesService } from "@services/api/services/character-classes.service";
 
 @Component({
 	selector: "app-character-form",
@@ -32,32 +33,34 @@ export class CharacterFormComponent implements OnInit {
 			],
 		],
 	});
-	classesAvailable: Array<CharacterClassModel> = [];
+	classesAvailable: Array<CharacterClassDto> = [];
 
 	@Input()
-	currentCharacter?: CharacterModel;
+	currentCharacter?: CharacterDto;
 
 	@Output()
-	confirmed: EventEmitter<CharacterModel> = new EventEmitter<CharacterModel>();
+	confirmed = new EventEmitter<void>();
 	@Output()
 	canceled = new EventEmitter<void>();
 
 	constructor(
-		private characterApiProxyService: CharacterApiProxyService,
-		private characterClassApiProxyService: CharacterClassApiProxyService,
+		private characterApiProxyService: CharactersService,
+		private characterClassApiProxyService: CharacterClassesService,
 		private toastService: ToastProviderService
 	) {}
 
 	ngOnInit(): void {
-		this.characterClassApiProxyService.get().subscribe((classes) => {
-			this.classesAvailable = classes;
-		});
+		this.characterClassApiProxyService
+			.apiV1CharacterClassesGet$Json()
+			.subscribe((classes) => {
+				this.classesAvailable = classes;
+			});
 
 		if (this.currentCharacter) {
 			this.characterForm.setValue({
 				name: this.currentCharacter.name,
 				classId: this.currentCharacter.class.id,
-				dateOfBirth: this.currentCharacter.dateOfBirth,
+				dateOfBirth: new Date(this.currentCharacter.dateOfBirth),
 			});
 		}
 	}
@@ -69,15 +72,20 @@ export class CharacterFormComponent implements OnInit {
 		);
 
 		(this.currentCharacter
-			? this.characterApiProxyService.put(this.currentCharacter.id, {
-					name: this.characterForm.value.name!,
-					classId: this.characterForm.value.classId!,
-					dateOfBirth: this.characterForm.value.dateOfBirth!,
+			? this.characterApiProxyService.apiV1CharactersIdPut({
+					id: this.currentCharacter.id,
+					body: {
+						name: this.characterForm.value.name!,
+						classId: this.characterForm.value.classId!,
+						dateOfBirth: this.characterForm.value.dateOfBirth!.toISOString(),
+					},
 				})
-			: this.characterApiProxyService.post({
-					name: this.characterForm.value.name!,
-					classId: this.characterForm.value.classId!,
-					dateOfBirth: this.characterForm.value.dateOfBirth!,
+			: this.characterApiProxyService.apiV1CharactersPost({
+					body: {
+						name: this.characterForm.value.name!,
+						classId: this.characterForm.value.classId!,
+						dateOfBirth: this.characterForm.value.dateOfBirth!.toISOString(),
+					},
 				})
 		).subscribe({
 			next: (response) => {
@@ -87,7 +95,7 @@ export class CharacterFormComponent implements OnInit {
 					`Character ${this.currentCharacter ? "updated" : "created"} successfully`,
 					"success"
 				);
-				this.confirmed.emit(response);
+				this.confirmed.emit();
 			},
 			error: (error) => {
 				console.error(error);

@@ -1,17 +1,17 @@
 import { Component, Input } from "@angular/core";
 import { RouterLink } from "@angular/router";
-
-import { CharacterModel } from "@models/character.model";
+import { CharacterDto } from "@services/api/models/character-dto";
 
 @Component({
 	selector: "app-character-card",
 	imports: [RouterLink],
 	templateUrl: "./character-card.component.html",
 	styleUrl: "./character-card.component.css",
+	standalone: true,
 })
 export class CharacterCardComponent {
 	@Input()
-	character!: CharacterModel;
+	character!: CharacterDto;
 
 	constructor() {}
 }

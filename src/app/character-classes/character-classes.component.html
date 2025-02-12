@@ -1,7 +1,7 @@
 <span class="flex justify-between text-base font-semibold text-gray-900 dark:text-white mb-4">
 	<h1 class="my-auto text-2xl">Here are the classes currently available</h1>
 
-	@if (userType === 'admin') {
+	@if (authService.user?.permissions?.includes('admin')) {
 		<a
 			class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 			id="newCharacterModalButton"
@@ -19,7 +19,9 @@
 @if (classes?.length === 0) {
 	<p class="text-center">
 		There is no class available yet.
-		Create one now!
+		@if (authService.user?.permissions?.includes('admin')) {
+			You can create one by clicking the button above.
+		}
 	</p>
 }
 
@@ -27,7 +29,6 @@
 	@for (characterClass of (classes || []); track characterClass.id) {
 		<app-character-class-card
 			[characterClass]="characterClass"
-			(click)="onCharacterClassClick(characterClass)"
 		/>
 	}
 </div>

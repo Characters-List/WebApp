@@ -7,7 +7,9 @@ import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { authHttpInterceptorFn, provideAuth0 } from "@auth0/auth0-angular";
 
 import { routes } from "./app.routes";
-import { provideApiProxy } from "@services/api/api-proxy.provider";
+
+import { registerApiProvider } from "@services/register-api.provider";
+import { environment } from "@environment/environment";
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -26,7 +28,7 @@ export const appConfig: ApplicationConfig = {
 			httpInterceptor: {
 				allowedList: [
 					{
-						uri: "https://localhost:7131/*",
+						uri: `${environment.apiUrl}/*`,
 						tokenOptions: {
 							authorizationParams: {
 								audience: "https://characterslist/api",
@@ -36,6 +38,6 @@ export const appConfig: ApplicationConfig = {
 				],
 			},
 		}),
-		provideApiProxy(),
+		registerApiProvider(),
 	],
 };

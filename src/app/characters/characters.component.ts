@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
-import { CharacterModel } from "@models/character.model";
+import { ActivatedRoute, RouterLink } from "@angular/router";
+
 import { CharacterCardComponent } from "@components/character/character-card/character-card.component";
-import { CharacterApiProxyService } from "@services/api/character-api-proxy.service";
+import { CharacterDto } from "@services/api/models/character-dto";
 
 @Component({
 	selector: "app-characters",
@@ -11,20 +11,13 @@ import { CharacterApiProxyService } from "@services/api/character-api-proxy.serv
 	styleUrl: "./characters.component.css",
 })
 export class CharactersComponent implements OnInit {
-	userCharacters: Array<CharacterModel> | null = null;
+	userCharacters: Array<CharacterDto> | null = null;
 
-	constructor(
-		private characterApiService: CharacterApiProxyService,
-		private router: Router
-	) {}
+	constructor(private activatedRoute: ActivatedRoute) {}
 
 	ngOnInit(): void {
-		this.characterApiService.get().subscribe((characters) => {
-			this.userCharacters = characters;
+		this.activatedRoute.data.subscribe((data) => {
+			this.userCharacters = data["characters"];
 		});
-	}
-
-	onCharacterClick(character: CharacterModel) {
-		void this.router.navigate(["/characters", character.id]);
 	}
 }

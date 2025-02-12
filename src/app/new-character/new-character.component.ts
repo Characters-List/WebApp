@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
-
-import { CharacterModel } from "@models/character.model";
 import { Router } from "@angular/router";
+
 import { CharacterFormComponent } from "@components/character/character-form/character-form.component";
 
 @Component({
@@ -13,8 +12,8 @@ import { CharacterFormComponent } from "@components/character/character-form/cha
 export class NewCharacterComponent {
 	constructor(private router: Router) {}
 
-	onCharacterCreated(character: CharacterModel) {
-		void this.router.navigate(["/characters", character.id]);
+	onCharacterCreated() {
+		void this.router.navigate(["/characters"]);
 	}
 
 	onCancelCreation() {

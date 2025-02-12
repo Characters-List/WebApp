@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { CharacterClassFormComponent } from "@components/character-class/character-class-form/character-class-form.component";
-import { CharacterClassModel } from "@models/characterClass.model";
 
 @Component({
 	selector: "app-new-character-class",
@@ -13,11 +12,7 @@ import { CharacterClassModel } from "@models/characterClass.model";
 export class NewCharacterClassComponent {
 	constructor(private router: Router) {}
 
-	onCancelCreation() {
+	redirectToClasses() {
 		void this.router.navigate(["/classes"]);
-	}
-
-	onCharacterCreated($event: CharacterClassModel) {
-		void this.router.navigate(["/classes", $event.id]);
 	}
 }

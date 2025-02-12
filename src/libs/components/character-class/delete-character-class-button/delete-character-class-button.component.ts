@@ -1,8 +1,9 @@
 import { Component, Input } from "@angular/core";
-import { CharacterClassModel } from "@models/characterClass.model";
 import { Router } from "@angular/router";
+
 import { ToastProviderService } from "@services/toast-provider/toast-provider.service";
-import { CharacterClassApiProxyService } from "@services/api/character-class-api-proxy.service";
+import { CharacterClassDto } from "@services/api/models/character-class-dto";
+import { CharacterClassesService } from "@services/api/services/character-classes.service";
 
 @Component({
 	selector: "app-delete-character-class-button",
@@ -11,13 +12,13 @@ import { CharacterClassApiProxyService } from "@services/api/character-class-api
 	styleUrl: "./delete-character-class-button.component.css",
 })
 export class DeleteCharacterClassButtonComponent {
-	@Input() characterClass!: CharacterClassModel;
+	@Input() characterClass!: CharacterClassDto;
 
 	isDeletionModalOpen = false;
 
 	constructor(
 		private router: Router,
-		private classApiService: CharacterClassApiProxyService,
+		private classApiService: CharacterClassesService,
 		private toastService: ToastProviderService
 	) {}
 
@@ -28,22 +29,24 @@ export class DeleteCharacterClassButtonComponent {
 	onDeleteClick() {
 		const toastId = this.toastService.showToast("Deleting character class...");
 
-		this.classApiService.delete(this.characterClass.id).subscribe({
-			next: () => {
-				this.toastService.clearToast(toastId);
-				this.toastService.showToast(
-					"Character class deleted successfully",
-					"success"
-				);
-				void this.router.navigate(["/classes"]);
-			},
-			error: () => {
-				this.toastService.clearToast(toastId);
-				this.toastService.showToast(
-					"Failed to delete character class",
-					"error"
-				);
-			},
-		});
+		this.classApiService
+			.apiV1CharacterClassesIdDelete({ id: this.characterClass.id })
+			.subscribe({
+				next: () => {
+					this.toastService.clearToast(toastId);
+					this.toastService.showToast(
+						"Character class deleted successfully",
+						"success"
+					);
+					void this.router.navigate(["/classes"]);
+				},
+				error: () => {
+					this.toastService.clearToast(toastId);
+					this.toastService.showToast(
+						"Failed to delete character class",
+						"error"
+					);
+				},
+			});
 	}
 }
